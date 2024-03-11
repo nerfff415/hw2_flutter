@@ -4,6 +4,7 @@ class Article {
   final String urlToImage;
   final String url;
   final String content;
+  bool isFavorite; // Добавлено новое поле
 
   Article({
     required this.title,
@@ -11,6 +12,7 @@ class Article {
     required this.urlToImage,
     required this.url,
     required this.content,
+    this.isFavorite = false, // Инициализация по умолчанию
   });
 
   factory Article.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class Article {
       urlToImage: json['urlToImage'] ?? '',
       url: json['url'] ?? '',
       content: json['content'] ?? '',
+      isFavorite: json['isFavorite'] ?? false, // Инициализация из JSON
     );
   }
 }

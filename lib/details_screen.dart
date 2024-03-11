@@ -1,47 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'article.dart';
+import 'favorites_manager.dart'; // Убедитесь, что создали и импортировали FavoritesManager
 
 class DetailsScreen extends StatelessWidget {
-  final String title;
-  final String imageUrl;
-  final String content;
-  final String articleUrl;
+  final Article article;
 
-  DetailsScreen({
-    required this.title,
-    required this.imageUrl,
-    required this.content,
-    required this.articleUrl,
-  });
+  DetailsScreen({required this.article});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(article.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(FavoritesManager.isFavorite(article.url)
+                ? Icons.favorite
+                : Icons.favorite_border),
+            color: FavoritesManager.isFavorite(article.url) ? Colors.red : null,
+            onPressed: () async {
+              await FavoritesManager.toggleFavorite(article.url);
+              // Обновление состояния может потребовать дополнительной логики
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            imageUrl.isNotEmpty
-                ? Image.network(imageUrl, fit: BoxFit.cover)
+            article.urlToImage.isNotEmpty
+                ? Image.network(article.urlToImage, fit: BoxFit.cover)
                 : SizedBox(
                     height: 200,
                     child: Center(child: Text('No Image Available'))),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(title, style: Theme.of(context).textTheme.headline6),
+              child: Text(article.title,
+                  style: Theme.of(context).textTheme.headline6),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(content.isEmpty ? 'No content available' : content),
+              child: Text(article.content.isEmpty
+                  ? 'No content available'
+                  : article.content),
             ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 8.0),
               child: ElevatedButton(
-                onPressed: () => _launchURL(articleUrl),
+                onPressed: () => _launchURL(article.url),
                 child: Text('Read full article'),
               ),
             ),

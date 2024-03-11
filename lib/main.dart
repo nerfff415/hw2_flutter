@@ -1,26 +1,66 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart'; // Убедитесь, что вы создали этот файл
+import 'home_screen.dart';
+import 'favorites_screen.dart';
+import 'favorites_manager.dart';
 
-void main() => runApp(NewsApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FavoritesManager.init();
+  runApp(MyApp());
+}
 
-class NewsApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'News App',
       theme: ThemeData(
-        // Основная светлая тема
         primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      darkTheme: ThemeData(
-        // Темная тема
-        brightness: Brightness.dark,
-        primarySwatch: Colors.blueGrey,
+      home: MainScreen(),
+    );
+  }
+}
+
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
+  final List<Widget> _widgetOptions = [
+    HomeScreen(),
+    FavoritesScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      themeMode:
-          ThemeMode.system, // Использует тему, выбранную в системных настройках
-      home: HomeScreen(), // Экран по умолчанию
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 }

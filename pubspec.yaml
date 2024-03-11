@@ -11,8 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  http: ^1.2.1  # Обновлено
-  dio: ^5.4.1   # Обновлено
+  http: ^1.2.1
+  dio: ^5.4.1
   shared_preferences: ^2.0.6
   url_launcher: ^6.0.12
   flutter_localizations:
@@ -21,7 +21,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1  # Обновлено
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  mockito: ^5.0.0
 
 
 flutter:

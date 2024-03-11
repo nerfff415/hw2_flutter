@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'article.dart';
 import 'details_screen.dart';
+import 'favorites_manager.dart'; // Убедитесь, что создали и импортировали FavoritesManager
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -42,16 +43,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 100, fit: BoxFit.cover)
                         : null,
                     title: Text(article.title),
+                    trailing: IconButton(
+                      icon: Icon(FavoritesManager.isFavorite(article.url)
+                          ? Icons.favorite
+                          : Icons.favorite_border),
+                      color: FavoritesManager.isFavorite(article.url)
+                          ? Colors.red
+                          : null,
+                      onPressed: () async {
+                        await FavoritesManager.toggleFavorite(article.url);
+                        setState(() {});
+                      },
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailsScreen(
-                            title: article.title,
-                            imageUrl: article.urlToImage,
-                            content: article.content,
-                            articleUrl: article.url,
-                          ),
+                          builder: (context) => DetailsScreen(article: article),
                         ),
                       );
                     },

@@ -4,8 +4,7 @@ import 'article.dart';
 
 class ApiService {
   final String _baseUrl = 'https://newsapi.org/v2';
-  final String _apiKey =
-      'b26de14f8a654fcc82c8e90cc62ee2cb'; // Замените на ваш API-ключ от NewsAPI
+  final String _apiKey = 'b26de14f8a654fcc82c8e90cc62ee2cb';
 
   Future<List<Article>> fetchTopHeadlines() async {
     final response = await http.get(
@@ -21,7 +20,6 @@ class ApiService {
           .toList();
       return articles;
     } else {
-      // Обработка ошибок или неудачного статуса ответа
       throw Exception('Failed to load top headlines');
     }
   }
